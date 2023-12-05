@@ -8,4 +8,6 @@ const theme = {
 
 module.exports = {
   theme,
+  darkMode: 'class', // 'media' 或 'class'，根據你的需求選擇
+
 }

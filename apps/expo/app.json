@@ -4,6 +4,7 @@
     "slug": "solito-nativewind",
     "version": "1.0.0",
     "scheme": "solito-nativewind",
+    "userInterfaceStyle": "automatic",
     "platforms": [
       "ios",
       "android"
