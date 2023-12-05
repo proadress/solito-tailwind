@@ -4,9 +4,24 @@
     "slug": "solito-nativewind",
     "version": "1.0.0",
     "scheme": "solito-nativewind",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "ios": {
       "bundleIdentifier": "com.solito.nativewind"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "38b13311-39c3-4aee-9b83-7996dbe2c6fb"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/38b13311-39c3-4aee-9b83-7996dbe2c6fb"
+    },
+    "android": {}
   }
 }
