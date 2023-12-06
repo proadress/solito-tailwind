@@ -1,9 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View } from 'app/design/view';
-import { Text } from 'app/design/typography'
-import { PanResponder, StyleSheet, Animated, TextInput } from 'react-native';
+import { Text, TextInput } from 'app/design/typography'
+import { PanResponder, StyleSheet, Animated } from 'react-native';
 import { setData } from './models/localStorge';
-// import { fetchPost } from './fetchFunc';
 
 interface DraggableElementProps {
   initialX: number;
@@ -12,19 +11,18 @@ interface DraggableElementProps {
   inputId: string;
 }
 
-const DraggableElement: React.FC<DraggableElementProps> = ({ inputId, value, initialX, initialY }) => {
+export const DraggableElement: React.FC<DraggableElementProps> = ({ inputId, value, initialX, initialY }) => {
   const pan = useRef<any>(new Animated.ValueXY({ x: initialX, y: initialY })).current;
   const initialPosition = useRef({ x: 0, y: 0 });
-  const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(value);
-  const [isDraging, setIsDraging] = useState(false);
+  const [Draging, setDraging] = useState(false);
 
   useEffect(() => {
     const s = {
       "value": editText, "x": pan.x._value, "y": pan.y._value
     }
     setData(inputId, JSON.stringify(s));
-  }, [editText, pan.x._value, pan.y._value]);
+  }, [editText, Draging]);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -34,19 +32,13 @@ const DraggableElement: React.FC<DraggableElementProps> = ({ inputId, value, ini
     },
     onPanResponderMove: (event, gestureState) => {
       // 計算偏移，並將 pan.x 和 pan.y 設置為初始位置加上偏移
-      if (!isDraging) setIsDraging(true);
       pan.setValue({
         x: initialPosition.current.x + gestureState.dx,
         y: initialPosition.current.y + gestureState.dy,
       });
     },
     onPanResponderRelease: () => {
-      if (isDraging) {
-        setIsDraging(false);
-      }
-      else {
-        setIsEditing(true);
-      }
+      setDraging(!Draging);
     },
   });
   const handleInputChange = (newText: string) => {
@@ -54,34 +46,20 @@ const DraggableElement: React.FC<DraggableElementProps> = ({ inputId, value, ini
   };
 
   return (
-    <View>
-
-      <Animated.View
-        style={{
-          transform: [{ translateX: pan.x }, { translateY: pan.y }],
-          width: 100,
-          height: 100,
-          backgroundColor: 'gray',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        {...panResponder.panHandlers}
-      >
-        {isEditing ? (
-          <TextInput
-            value={editText}
-            onChangeText={handleInputChange}
-            onBlur={() => setIsEditing(false)}
-            autoFocus
-          />
-
-        ) : (
-          <Text>{editText}</Text>
-        )}
-      </Animated.View>
-    </View >
+    <Animated.View
+      style={{
+        transform: [{ translateX: pan.x }, { translateY: pan.y }],
+        width: 0,
+        height: 0,
+      }}
+      {...panResponder.panHandlers}
+    ><View className='border h-[100px] w-[100px] dark:border-gray-50 border-gray-800 items-center justify-center'>
+        <TextInput
+          className="dark:text-gray-50 text-center"
+          value={editText}
+          onChangeText={handleInputChange}
+        />
+      </View>
+    </Animated.View>
   );
 };
-
-export default DraggableElement;
-

@@ -1,5 +1,5 @@
 import { ComponentProps, forwardRef } from 'react'
-import { Text as NativeText, Platform, Linking, TextStyle, Animated } from 'react-native'
+import { Text as NativeText, Platform, Linking, TextStyle, TextInput as NativeTextInput, Animated as NativeAnimated } from 'react-native'
 import { styled, StyledProps } from 'nativewind'
 import { TextLink as SolitoTextLink } from 'solito/link'
 
@@ -75,3 +75,5 @@ export const TextLink = styled<
     />
   )
 }, 'text-base font-bold hover:underline text-blue-500')
+
+export const TextInput = styled(NativeTextInput)
