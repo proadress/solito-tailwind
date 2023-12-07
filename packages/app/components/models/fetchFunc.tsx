@@ -102,7 +102,7 @@ export const useFetchPost = () => {
 
             const result = await response.json();
             return result;
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error fetching data:', error);
             setError(error.message || 'An error occurred while fetching data.');
             throw error; // rethrow the error to let the caller handle it

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createParam } from 'solito';
 import { Text, TextLink } from 'app/design/typography';
 import { View } from 'app/design/view';
@@ -49,8 +49,7 @@ export function UserDetailScreen() {
         if (typeof itemString === 'string') {
           const item = JSON.parse(itemString);
           return (
-            editMode ?
-              <DraggableElement key={index} inputId={key} value={item['value']} initialX={item['x']} initialY={item['y']} />
+            editMode ? <DraggableElement key={index} inputId={key} value={item['value']} initialX={item['x']} initialY={item['y']} />
               : <TextElement key={index} value={item['value']} x={item['x']} y={item['y']} />
           );
         }
@@ -79,7 +78,7 @@ export function UserDetailScreen() {
           </Text>
         </Pressable>
 
-        <Pressable onPress={async () => { await getButton(editText); await reBuild(); }}>
+        <Pressable onPress={async () => { await clear(); await reBuild(); await getButton(editText); await reBuild(); }}>
           <Text className='bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-700 hover:to-orange-700 text-white font-handwritten py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105'>
             Restore
           </Text>

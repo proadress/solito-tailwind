@@ -25,7 +25,6 @@ export const useButton = () => {
             console.log(dataObject);
 
             const dataArray = Object.entries(dataObject);
-            await clear();
             dataArray.forEach(([uuid, jsonString]) => {
                 setData(uuid, jsonString);
             });
