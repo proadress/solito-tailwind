@@ -57,7 +57,7 @@ export function HomeScreen() {
 
 
   return (
-    <View className='border flex-1 p-6 dark:bg-slate-900 items-center justify-center '>
+    <View className='border flex-1 p-6 dark:bg-slate-900 bg-orange-100 items-center justify-center '>
 
       {/* <Row className="space-x-2">
         <TextInput
