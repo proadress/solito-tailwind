@@ -2094,15 +2094,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-runtime@npm:2.2.7":
-  version: 2.2.7
-  resolution: "@expo/metro-runtime@npm:2.2.7"
+"@expo/metro-runtime@npm:2.2.16":
+  version: 2.2.16
+  resolution: "@expo/metro-runtime@npm:2.2.16"
   dependencies:
     "@bacons/react-views": ^1.1.3
     qs: ^6.10.3
   peerDependencies:
     react-native: "*"
-  checksum: db02cce741eb05c5ab1755b812928763a7a4f47e08c244808623f22cfedd933999e6883746aef7b98420cae53b320694509f66268ae04fe5f8dfabe11f937058
+  checksum: 60827fc9cae93c7b92578a0c0ac62f5ae57155c800eeb8ee75cf15a8f6167d20e864ebcc7cf4fccf2f815592151af98442f063480e7589b59679c3d58994a535
   languageName: node
   linkType: hard
 
@@ -2714,6 +2714,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-async-storage/async-storage@npm:1.18.2":
+  version: 1.18.2
+  resolution: "@react-native-async-storage/async-storage@npm:1.18.2"
+  dependencies:
+    merge-options: ^3.0.4
+  peerDependencies:
+    react-native: ^0.0.0-0 || 0.60 - 0.72 || 1000.0.0
+  checksum: bdbcd2e4785a1348657302fa48f4073d980d3b3626fc2ea1e8ec3013825d0013a49d0805a3fd1e98c0b8b12eb1273ef03fb842686ce740d25331398deb2691c4
+  languageName: node
+  linkType: hard
+
 "@react-native-async-storage/async-storage@npm:^1.21.0":
   version: 1.21.0
   resolution: "@react-native-async-storage/async-storage@npm:1.21.0"
@@ -3259,6 +3270,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: ffed203bfe7aad772b8286f7953305c9181ac3a8f27d3f5400fbbc2a8e27ca8e5bbff818ee014f39ca0d19d2b3bb154e5bdbec7e232c6f80b59069375aa78349
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:~18.2.14":
+  version: 18.2.42
+  resolution: "@types/react@npm:18.2.42"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: d2019afdf48303a3a598a97cc9dd2284e3c04b369e791f6ba3c33232b7f8645daff97b093a19f8b3ce75ac8a261b47552cb4513226ab16d843eb9443b0f91844
   languageName: node
   linkType: hard
 
@@ -5873,27 +5895,27 @@ __metadata:
   resolution: "expo-app@workspace:apps/expo"
   dependencies:
     "@babel/core": ^7.20.0
-    "@react-native-async-storage/async-storage": ^1.21.0
-    "@types/react": ^18.2.21
+    "@react-native-async-storage/async-storage": 1.18.2
+    "@types/react": ~18.2.14
     "@types/react-native": ^0.72.2
     app: "*"
     expo: ^49.0.0
-    expo-dev-client: ^2.4.12
+    expo-dev-client: ~2.4.12
     expo-linking: ~5.0.2
-    expo-router: ^2.0.5
+    expo-router: ^2.0.4
     expo-splash-screen: ~0.20.5
     expo-status-bar: ~1.6.0
     expo-updates: ~0.18.17
     react: 18.2.0
     react-dom: 18.2.0
-    react-native: 0.72.6
+    react-native: 0.72.5
     react-native-gesture-handler: ~2.12.0
     react-native-reanimated: ~3.3.0
     react-native-safe-area-context: 4.6.3
     react-native-screens: ~3.22.0
     react-native-web: ~0.19.6
     tailwindcss: ^3.0.24
-    typescript: ^5.2.2
+    typescript: ^5.1.3
   languageName: unknown
   linkType: soft
 
@@ -5933,7 +5955,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-dev-client@npm:^2.4.12":
+"expo-dev-client@npm:~2.4.12":
   version: 2.4.12
   resolution: "expo-dev-client@npm:2.4.12"
   dependencies:
@@ -6011,17 +6033,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-head@npm:0.0.11":
-  version: 0.0.11
-  resolution: "expo-head@npm:0.0.11"
+"expo-head@npm:0.0.20":
+  version: 0.0.20
+  resolution: "expo-head@npm:0.0.20"
   dependencies:
     react-helmet-async: ^1.3.0
   peerDependencies:
     expo: "*"
-    expo-constants: "*"
     react: "*"
     react-native: "*"
-  checksum: 243f961d95d40996f216f2618336dd3c3f49da798e6ccd789a0484fdab0c018a6c9ec9d8e6acd4274e50572682368406effc9409d613c652732cb312f2e34187
+  checksum: a1ae635c9e0164ff5116a9e60341ea5556bac71b8a7a021e642015031a7f492010a2ae0e0791ae03ce7b991d0b9e5679d11b6d7f954435d76f80b03838415dac
   languageName: node
   linkType: hard
 
@@ -6089,17 +6110,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-router@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "expo-router@npm:2.0.5"
+"expo-router@npm:^2.0.4":
+  version: 2.0.14
+  resolution: "expo-router@npm:2.0.14"
   dependencies:
     "@bacons/react-views": ^1.1.3
-    "@expo/metro-runtime": 2.2.7
+    "@expo/metro-runtime": 2.2.16
     "@radix-ui/react-slot": 1.0.1
     "@react-navigation/bottom-tabs": ~6.5.7
     "@react-navigation/native": ~6.1.6
     "@react-navigation/native-stack": ~6.9.12
-    expo-head: 0.0.11
+    expo-head: 0.0.20
     expo-splash-screen: ~0.20.2
     query-string: 7.1.3
     react-helmet-async: ^1.3.0
@@ -6123,7 +6144,7 @@ __metadata:
       optional: true
     react-native-reanimated:
       optional: true
-  checksum: c45fe3d4c29c97c3b5ff8f8cda43a1918ccb35a2d38ffd82b3735fe7e92a54563982a4422960478ccdf93d5b3faa287e942aafd5159126e19d49ceca5a914ab0
+  checksum: 9f534b98f5be5665718a22c92c9af0d85b15c818c1c345a0fb03134e1d29ef16312de98a7c01ea4fc2521037fd0784253b5669b850c61d459bc3b677e482ad92
   languageName: node
   linkType: hard
 
@@ -10626,9 +10647,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.72.6":
-  version: 0.72.6
-  resolution: "react-native@npm:0.72.6"
+"react-native@npm:0.72.5":
+  version: 0.72.5
+  resolution: "react-native@npm:0.72.5"
   dependencies:
     "@jest/create-cache-key-function": ^29.2.1
     "@react-native-community/cli": 11.3.7
@@ -10670,7 +10691,7 @@ __metadata:
     react: 18.2.0
   bin:
     react-native: cli.js
-  checksum: 3cf0af092c0d6b9b6e67795664e324136f6d1a41c6a889737fb612e5ddb93d0537c890fe733e751fe3bbc139cbb4f9f6d9eff4467e8d8dc67194ac8b382fa168
+  checksum: 28a8e41dffaa8102c699622a28a19f6640d9a95ee5157b92d67677d49191f4f8e0acdb65b0413e6636047382be47047af5d6fdd36c36def80f0460425d30cf25
   languageName: node
   linkType: hard
 
@@ -12469,6 +12490,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.1.3":
+  version: 5.3.3
+  resolution: "typescript@npm:5.3.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 2007ccb6e51bbbf6fde0a78099efe04dc1c3dfbdff04ca3b6a8bc717991862b39fd6126c0c3ebf2d2d98ac5e960bcaa873826bb2bb241f14277034148f41f6a2
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@^5.0.4#~builtin<compat/typescript>, typescript@patch:typescript@^5.2.2#~builtin<compat/typescript>":
   version: 5.2.2
   resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=1f5320"
@@ -12476,6 +12507,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 07106822b4305de3f22835cbba949a2b35451cad50888759b6818421290ff95d522b38ef7919e70fb381c5fe9c1c643d7dea22c8b31652a717ddbd57b7f4d554
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.1.3#~builtin<compat/typescript>":
+  version: 5.3.3
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=1f5320"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: f61375590b3162599f0f0d5b8737877ac0a7bc52761dbb585d67e7b8753a3a4c42d9a554c4cc929f591ffcf3a2b0602f65ae3ce74714fd5652623a816862b610
   languageName: node
   linkType: hard
 
