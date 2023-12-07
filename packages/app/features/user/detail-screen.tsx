@@ -1,32 +1,35 @@
-import { createParam } from 'solito'
-import { Text, TextLink } from 'app/design/typography'
-import { View } from 'app/design/view'
-import { useEffect, useState } from 'react'
-import { clear, getAllData, setData } from 'app/components/models/localStorge'
+import React, { useEffect, useState } from 'react';
+import { createParam } from 'solito';
+import { Text, TextLink } from 'app/design/typography';
+import { View } from 'app/design/view';
+import { Pressable } from 'react-native';
+import { Row } from 'app/design/layout';
+import { DraggableElement, TextElement } from 'app/components/drag';
+import { clear, getAllData, setData } from 'app/components/models/localStorge';
 import { v4 } from 'uuid';
-import { Pressable } from 'react-native'
-import { Row } from 'app/design/layout'
-import { DraggableElement } from 'app/components/drag'
-import { TextElement } from 'app/components/item'
+import { useButton } from 'app/components/models/Button';
 
-const { useParam } = createParam<{ id: string }>()
+const { useParam } = createParam<{ id: string }>();
 
 export function UserDetailScreen() {
-  const [id] = useParam('id')
+  const [id] = useParam('id');
   const [items, setItems] = useState<object>({});
-  const [isclear, setclear] = useState(false);
+  const editText = "123";
 
+  const { updateButton, getButton } = useButton();
 
   useEffect(() => {
-    const get = async () => {
-      const newData = await getAllData();
-      setItems(newData);
-    };
-    get();
-  }, [isclear]);
+    reBuild();
+  }, []);
+
+  const reBuild = async () => {
+    const newData = await getAllData();
+    setItems(newData);
+    console.log("reBuilding");
+
+  };
 
   const addNewItem = async () => {
-    setclear(false);
     const obj = {
       "id": v4(),
       "value": "123",
@@ -35,98 +38,73 @@ export function UserDetailScreen() {
     }
     const jsonobj = JSON.stringify(obj);
     await setData(obj.id, jsonobj);
-    setItems(prevItems => ({
-      ...prevItems,
-      [obj.id]: jsonobj,
-    }));
+    setItems(prevItems => ({ ...prevItems, [obj.id]: jsonobj }));
   }
 
-
-  const createDragElement = () => {
-    if (!isclear) {
-      const components = Object.keys(items)
-        .filter((key) => typeof key === 'string' && key.length === 36)
-        .map((key, index) => {
-          const itemString = items[key as keyof typeof items];
-          if (typeof itemString === 'string') {
-            const item = JSON.parse(itemString);
-            return (
-              <DraggableElement key={index} inputId={key} value={item['value']} initialX={item['x']} initialY={item['y']} ></DraggableElement>
-            );
-          }
-          return null;
-        });
-      return components;
-    }
-  };
-  const createElement = () => {
-    const components = Object.keys(items)
+  const createElement = (editMode: boolean) => {
+    return Object.keys(items)
       .filter((key) => typeof key === 'string' && key.length === 36)
       .map((key, index) => {
         const itemString = items[key as keyof typeof items];
         if (typeof itemString === 'string') {
           const item = JSON.parse(itemString);
-          const s = `w-[100px] h-[100px] absolute left-[50px] top-[50px] bg-red-500`.toString();
-          console.log(s);
           return (
-            // <Text  key={index} inputId={key} value={item['value']} initialX={item['x']} initialY={item['y']} ></TextElement>
-            <>
-              <View key={index} className={s}>
-                <Text className={`absolute  dark:text-gray-50`}>
-                  {item['value']}
-                </Text>
-              </View>
-            </>
+            editMode ?
+              <DraggableElement key={index} inputId={key} value={item['value']} initialX={item['x']} initialY={item['y']} />
+              : <TextElement key={index} value={item['value']} x={item['x']} y={item['y']} />
           );
         }
         return null;
       });
-    return components;
   };
 
-  const createModel = () => {
+  const createButton = () => {
     return (
-      <>
-        <Row>
-          <Pressable onPress={addNewItem}>
-            <View className="w-[50px] h-[20px] bg-red-500 items-center justify-center">
-              <Text >add</Text>
-            </View>
-          </Pressable>
-          <View />
-          <Pressable onPress={() => {
-            clear();
-            setclear(true);
-          }}><View className='w-[50px] h-[20px] bg-lime-500 items-center justify-center'>
-              <Text>clean</Text>
-            </View>
-          </Pressable>
-        </Row>
+      <Row className="space-x-3">
+        <Pressable onPress={addNewItem}>
+          <Text className='bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105'>
+            Add
+          </Text>
+        </Pressable>
 
-        <View className="flex-1 border border-green-400 items-center justify-center p-3">
-          <View className='h-[450px] w-[350px] border border-red-400'>
-            {createDragElement()}
-          </View>
-        </View>
-      </>)
-  }
-  const useModel = () => {
-    return (
-      <View className="flex-1 border border-green-400 items-center justify-center p-3">
-        <View className='h-[450px] w-[350px] border border-red-400'>
-          {createElement()}
-        </View>
-      </View>
-    )
-  }
+        <Pressable onPress={async () => { await clear(); await reBuild(); }}>
+          <Text className='bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-700 hover:to-green-700 text-white font-handwritten py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105'>
+            Clear
+          </Text>
+        </Pressable>
+
+        <Pressable onPress={async () => await updateButton(editText)}>
+          <Text className='bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-700 hover:to-orange-700 text-white font-handwritten py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105'>
+            Save
+          </Text>
+        </Pressable>
+
+        <Pressable onPress={async () => { await getButton(editText); await reBuild(); }}>
+          <Text className='bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-700 hover:to-orange-700 text-white font-handwritten py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105'>
+            Restore
+          </Text>
+        </Pressable>
+
+      </Row>
+    );
+  };
 
   return (
-    <View className='border flex-1 p-6 dark:bg-slate-800'>
-      <View className="items-center justify-center">
-        <Text className="mb-4 text-center font-bold dark:text-gray-50">{`User ID: ${id}`}</Text>
-        <TextLink href="/" className='dark:text-gray-50'>👈 Go Home</TextLink>
+    <View className='border flex-1 dark:bg-gradient-to-b from-slate-800 to-orange-950 bg-orange-100'>
+      <Row className="items-center justify-center">
+        <TextLink href="/" className='dark:text-gray-50 hover:text-gray-300 transition duration-300'>
+          <Text >Back ID: {id}</Text>
+        </TextLink>
+
+        <View className='w-[30px]'></View>
+      </Row>
+      {id === "edit" ? (createButton()) : ""}
+      <View className="flex-1 border border-green-400 border-dashed items-center justify-center p-3">
+        <View className='h-[550px] w-[350px] border border-red-400 border-dashed'>
+          {(createElement(id === "edit"))}
+        </View>
       </View>
-      {id === "edit" ? (createModel()) : id === "use" ? (useModel()) : <></>}
-    </View >
-  )
+    </View>
+
+  );
 }

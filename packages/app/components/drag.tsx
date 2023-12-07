@@ -53,7 +53,7 @@ export const DraggableElement: React.FC<DraggableElementProps> = ({ inputId, val
         height: 0,
       }}
       {...panResponder.panHandlers}
-    ><View className='border h-[100px] w-[100px] dark:border-gray-50 border-gray-800 items-center justify-center'>
+    ><View className='border h-[20px] w-[100px] dark:border-gray-50 border-gray-800 items-center justify-center'>
         <TextInput
           className="dark:text-gray-50 text-center"
           value={editText}
@@ -61,5 +61,21 @@ export const DraggableElement: React.FC<DraggableElementProps> = ({ inputId, val
         />
       </View>
     </Animated.View>
+  );
+};
+
+interface TextElementProps {
+  x: number;
+  y: number;
+  value: string;
+}
+
+export const TextElement: React.FC<TextElementProps> = ({ value, x, y }) => {
+  return (
+    <Text
+      className={`absolute dark:text-gray-50`}
+      style={{ transform: [{ translateX: x + 50 }, { translateY: y + 10 }] }}>
+      {value}
+    </Text>
   );
 };

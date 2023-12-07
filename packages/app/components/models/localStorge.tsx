@@ -15,7 +15,8 @@ export const getAllData = async () => {
         if (keys != null) {
             const multiGetResults = await AsyncStorage.multiGet(keys);
             const data = multiGetResults.reduce((acc: Record<string, any>, [key, value]) => {
-                acc[key] = value; // 將每個 key-value 對添加到對象中
+                if (key.length == 36)
+                    acc[key] = value; // 將每個 key-value 對添加到對象中
                 return acc;
             }, {});
             console.log('Data:', data);
