@@ -2,27 +2,33 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View } from 'app/design/view';
 import { Text, TextInput } from 'app/design/typography'
 import { PanResponder, StyleSheet, Animated } from 'react-native';
-import { setData } from './models/localStorge';
+import { saveData, ElementData } from './models/localStorge';
+import { Row } from 'app/design/layout';
+import { Pressable } from 'react-native';
 
-interface DraggableElementProps {
-  initialX: number;
-  initialY: number;
-  value: string;
-  inputId: string;
-}
 
-export const DraggableElement: React.FC<DraggableElementProps> = ({ inputId, value, initialX, initialY }) => {
-  const pan = useRef<any>(new Animated.ValueXY({ x: initialX, y: initialY })).current;
+
+export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
+  const pan = useRef<any>(new Animated.ValueXY({ x: data.x, y: data.y })).current;
   const initialPosition = useRef({ x: 0, y: 0 });
-  const [editText, setEditText] = useState(value);
+  const [edit, setEdit] = useState(data);
   const [Draging, setDraging] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const animatedHeight = new Animated.Value(isExpanded ? 40 : 0);
+
+  const handleToggle = () => {
+    Animated.timing(animatedHeight, {
+      toValue: isExpanded ? 40 : 200,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+    setIsExpanded(!isExpanded);
+  };
+
 
   useEffect(() => {
-    const s = {
-      "value": editText, "x": pan.x._value, "y": pan.y._value
-    }
-    setData(inputId, JSON.stringify(s));
-  }, [editText, Draging]);
+    saveData({ ...edit, x: pan.x._value, y: pan.y._value });
+  }, [edit, Draging]);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -41,41 +47,70 @@ export const DraggableElement: React.FC<DraggableElementProps> = ({ inputId, val
       setDraging(!Draging);
     },
   });
-  const handleInputChange = (newText: string) => {
-    setEditText(newText);
-  };
+
 
   return (
     <Animated.View
       style={{
         transform: [{ translateX: pan.x }, { translateY: pan.y }],
-        width: 0,
         height: 0,
       }}
       {...panResponder.panHandlers}
-    ><View className='border h-[20px] w-[100px] dark:border-gray-50 border-gray-800 items-center justify-center'>
-        <TextInput
-          className="dark:text-gray-50 text-center"
-          value={editText}
-          onChangeText={handleInputChange}
-        />
+    ><View className='border  w-[200px] dark:border-gray-50 border-gray-800 items-center justify-center '>
+        <Row>
+          <TextInput
+            value={edit.value}
+            style={{ color: edit.color, fontSize: data.fontsize }}
+            className='dark:text-white text-center'
+            onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+          />
+          <Pressable onPress={handleToggle}>
+            <View className=' bg-white'>
+              <Text> = </Text>
+            </View>
+          </Pressable>
+        </Row>
+        <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
+          <Row>
+            <Text className='dark:text-white font-bold'>color:</Text>
+            <TextInput
+              value={edit.color}
+              className='dark:text-white text-center'
+              onChangeText={(newText) => { setEdit({ ...edit, color: newText }); }}
+            />
+          </Row>
+          <Row>
+            <Text className='dark:text-white font-bold'>size:</Text>
+            <TextInput
+              value={edit.fontsize.toString()}
+              className='dark:text-white text-center'
+              keyboardType="numeric"
+              onChangeText={(newText) => {
+                setEdit({
+                  ...edit, fontsize:
+                    newText ? parseInt(newText, 10) : 0
+                });
+              }}
+            />
+          </Row>
+        </Animated.View>
       </View>
-    </Animated.View>
+    </Animated.View >
   );
 };
 
-interface TextElementProps {
-  x: number;
-  y: number;
-  value: string;
-}
 
-export const TextElement: React.FC<TextElementProps> = ({ value, x, y }) => {
+export const TextElement: React.FC<{ data: ElementData }> = ({ data }) => {
+  console.log(data.value);
+
   return (
-    <Text
-      className={`absolute dark:text-gray-50`}
-      style={{ transform: [{ translateX: x + 50 }, { translateY: y + 10 }] }}>
-      {value}
-    </Text>
+    <View className=' absolute items-center justify-center' style={{ transform: [{ translateX: data.x-10 }, { translateY: data.y }] }}>
+      <Text
+        className="dark:text-gray-50 text-center"
+        style={{ fontSize: data.fontsize, color: data.color }}
+      >
+        {data.value}
+      </Text>
+    </View>
   );
 };

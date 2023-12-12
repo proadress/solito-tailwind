@@ -23,6 +23,8 @@
     "updates": {
       "url": "https://u.expo.dev/38b13311-39c3-4aee-9b83-7996dbe2c6fb"
     },
-    "android": {}
+    "android": {
+      "package": "com.solito.nativewind"
+    }
   }
 }

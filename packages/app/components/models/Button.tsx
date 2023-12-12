@@ -1,5 +1,5 @@
 import { useFetchPost } from "./fetchFunc";
-import { clear, getAllData, setData } from "./localStorge";
+import { clear, getAllData, saveData, ElementData } from "./localStorge";
 
 export const useButton = () => {
     const { fetchPost, loading, error } = useFetchPost();
@@ -21,12 +21,11 @@ export const useButton = () => {
             const result = await fetchPost('/api/get', postData);
             console.log('Data fetched successfully:', result);
 
-            const dataObject: Record<string, string> = JSON.parse(result.value);
+            const dataObject: ElementData[] = JSON.parse(result.value);
             console.log(dataObject);
 
-            const dataArray = Object.entries(dataObject);
-            dataArray.forEach(([uuid, jsonString]) => {
-                setData(uuid, jsonString);
+            dataObject.forEach((item) => {
+                saveData(item);
             });
         } catch (error) {
             console.error('Error fetching data:', error);

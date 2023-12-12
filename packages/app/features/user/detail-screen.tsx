@@ -5,7 +5,7 @@ import { View } from 'app/design/view';
 import { Pressable } from 'react-native';
 import { Row } from 'app/design/layout';
 import { DraggableElement, TextElement } from 'app/components/drag';
-import { clear, getAllData, setData } from 'app/components/models/localStorge';
+import { clear, getAllData, saveData, ElementData } from 'app/components/models/localStorge';
 import { v4 } from 'uuid';
 import { useButton } from 'app/components/models/Button';
 
@@ -13,7 +13,7 @@ const { useParam } = createParam<{ id: string }>();
 
 export function UserDetailScreen() {
   const [id] = useParam('id');
-  const [items, setItems] = useState<object>({});
+  const [items, setItems] = useState<ElementData[]>([]);
   const editText = "123";
 
   const { updateButton, getButton } = useButton();
@@ -26,35 +26,27 @@ export function UserDetailScreen() {
     const newData = await getAllData();
     setItems(newData);
     console.log("reBuilding");
-
   };
 
   const addNewItem = async () => {
-    const obj = {
-      "id": v4(),
-      "value": "123",
-      "x": 0,
-      "y": 0,
+    const obj: ElementData = {
+      id: v4(),
+      value: "123",
+      color: "",
+      fontsize: 15,
+      x: 0,
+      y: 0,
     }
-    const jsonobj = JSON.stringify(obj);
-    await setData(obj.id, jsonobj);
-    setItems(prevItems => ({ ...prevItems, [obj.id]: jsonobj }));
+    setItems(prevItems => prevItems.concat(obj));
+    await saveData(obj);
   }
 
   const createElement = (editMode: boolean) => {
-    return Object.keys(items)
-      .filter((key) => typeof key === 'string' && key.length === 36)
-      .map((key, index) => {
-        const itemString = items[key as keyof typeof items];
-        if (typeof itemString === 'string') {
-          const item = JSON.parse(itemString);
-          return (
-            editMode ? <DraggableElement key={index} inputId={key} value={item['value']} initialX={item['x']} initialY={item['y']} />
-              : <TextElement key={index} value={item['value']} x={item['x']} y={item['y']} />
-          );
-        }
-        return null;
-      });
+    return (
+      items.map((item, index) => (
+        editMode ? <DraggableElement key={index} data={item} />
+          : <TextElement key={index} data={item} />
+      )));
   };
 
   const createButton = () => {
@@ -95,12 +87,13 @@ export function UserDetailScreen() {
   };
 
   return (
-    <View className='border flex-1 dark:bg-gradient-to-b from-slate-800 to-orange-950 bg-orange-100'>
+    <View className='border flex-1 bg-orange-100 dark:bg-slate-800'>
       <Row>
-        <TextLink href="/" className='dark:text-gray-50 hover:text-gray-300 transition duration-300'>
-          <Text >Back ID: {id}</Text>
+        <TextLink href="/" className=' bg-purple-500 bg-gradient-to-r from-yellow-500 to-gray-500 hover:from-yellow-700 hover:to-orange-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+          <Text >
+            Back ID: {id}</Text>
         </TextLink>
-        {id === "edit" ? (createButton()) : ""}
+        {id === "edit" ? (createButton()) : null}
       </Row>
       <View className="flex-1 border border-green-400 border-dashed items-center justify-center p-3">
         <Row className="justify-end">
@@ -108,7 +101,7 @@ export function UserDetailScreen() {
             <View className='h-[550px] w-[350px] border border-red-400 border-dashed'>
               {createElement(false)}
             </View>
-            : ""}
+            : null}
           <View className='h-[550px] w-[350px] border border-red-400 border-dashed'>
             {(createElement(id === "edit"))}
           </View>

@@ -10,8 +10,4 @@ module.exports = {
   theme: {
     ...theme,
   },
-  plugins: [
-    // ...
-    require('@tailwindcss/typography'), // 示例：启用 Typography 插件
-  ],
-}
+ }

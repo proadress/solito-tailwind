@@ -1,16 +1,17 @@
-# apps/expo/package.json script "start": "npx expo start",
-yarn
-cd apps/next
-yarn add next@latest react@latest react-dom@latest eslint-config-next@latest
-# yarn ??db
+# # apps/expo/package.json script "start": "npx expo start",
+# yarn
+# cd apps/next
+# yarn add next@latest react@latest react-dom@latest eslinjt-config-next@latest
+# # yarn ??db
 
-cd ../..
-cd packages/app
-yarn add @react-native-async-storage/async-storage @types/uuid
+# cd ../..
+# cd packages/app
+# yarn add @react-native-async-storage/async-storage @types/uuid
 
-cd ../..
-cd apps/expo
-npx expo run:ios
-eas update
-expo upgrade
-
+# cd ../..
+# cd apps/expo
+# npx expo run:ios
+# eas update
+# eas login
+# eas build:configure
+# eas build

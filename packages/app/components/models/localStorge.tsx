@@ -1,9 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const setData = async (key: string, value: string) => {
+export interface ElementData {
+    id: string;
+    value: string;
+    color: string;
+    fontsize: number;
+    x: number;
+    y: number;
+
+}
+
+export const saveData = async (obj: ElementData) => {
     try {
-        console.log("set", key, value);
-        await AsyncStorage.setItem(key, value);
+        console.log("set", obj);
+        const jsonobj = JSON.stringify(obj);
+        await AsyncStorage.setItem(obj.id, jsonobj);
     } catch (e) {
         // saving error
     }
@@ -14,19 +25,23 @@ export const getAllData = async () => {
         const keys = await AsyncStorage.getAllKeys();
         if (keys != null) {
             const multiGetResults = await AsyncStorage.multiGet(keys);
-            const data = multiGetResults.reduce((acc: Record<string, any>, [key, value]) => {
-                if (key.length == 36)
-                    acc[key] = value; // 將每個 key-value 對添加到對象中
-                return acc;
-            }, {});
+            const data: ElementData[] = multiGetResults.reduce(
+                (acc: ElementData[], [key, value]) => {
+                    if (key !== null && key.length === 36 && value !== null) {
+                        acc.push(JSON.parse(value));
+                    }
+                    return acc;
+                },
+                []
+            );
             console.log('Data:', data);
 
             return data;
         }
-        return {};
+        return [];
     } catch (error) {
         console.error('Error retrieving keys:', error);
-        return {};
+        return [];
     }
 };
 
