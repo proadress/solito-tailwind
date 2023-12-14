@@ -4,7 +4,7 @@ import { Text, TextLink } from 'app/design/typography';
 import { View } from 'app/design/view';
 import { Pressable } from 'react-native';
 import { Row } from 'app/design/layout';
-import { DraggableElement, TextElement } from 'app/components/drag';
+import { DraggableElement, UseElement } from 'app/components/drag';
 import { clear, getAllData, saveData, ElementData } from 'app/components/models/localStorge';
 import { v4 } from 'uuid';
 import { useButton } from 'app/components/models/Button';
@@ -24,14 +24,19 @@ export function UserDetailScreen() {
 
   const reBuild = async () => {
     const newData = await getAllData();
+    console.log(newData);
+
+    // clear();
     setItems(newData);
-    console.log("reBuilding");
   };
 
-  const addNewItem = async () => {
+  const addNewItem = async (type: string) => {
     const obj: ElementData = {
       id: v4(),
-      value: "123",
+      name: "",
+      type: type,
+      value: "請輸入",
+      post: JSON.stringify({ a: 3, b: 4, v: "是最後答案" }),
       color: "",
       fontsize: 15,
       x: 0,
@@ -45,22 +50,37 @@ export function UserDetailScreen() {
     return (
       items.map((item, index) => (
         editMode ? <DraggableElement key={index} data={item} />
-          : <TextElement key={index} data={item} />
+          : <UseElement key={index} data={item} />
       )));
   };
 
   const createButton = () => {
     return (
       <Row className="space-x-3 justify-end">
-        <Pressable onPress={addNewItem}>
+        <Pressable onPress={() => addNewItem("text")}>
           <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
-            Add
+            AddText
+          </Text>
+        </Pressable>
+        <Pressable onPress={() => addNewItem("get")}>
+          <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+            AddGet
+          </Text>
+        </Pressable>
+        <Pressable onPress={() => addNewItem("post")}>
+          <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+            AddPost
           </Text>
         </Pressable>
 
         <Pressable onPress={async () => { await clear(); await reBuild(); }}>
           <Text className='bg-blue-500 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-700 hover:to-green-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
             Clear
+          </Text>
+        </Pressable>
+        <Pressable onPress={async () => { reBuild }}>
+          <Text className=' bg-purple-500 bg-gradient-to-r from-red-500 to-gray-500 hover:from-yellow-700 hover:to-orange-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+            ReBuild
           </Text>
         </Pressable>
 
@@ -76,11 +96,7 @@ export function UserDetailScreen() {
           </Text>
         </Pressable>
 
-        <Pressable onPress={async () => { reBuild(); }}>
-          <Text className=' bg-purple-500 bg-gradient-to-r from-red-500 to-gray-500 hover:from-yellow-700 hover:to-orange-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
-            ReBuild
-          </Text>
-        </Pressable>
+
 
       </Row>
     );
@@ -90,8 +106,7 @@ export function UserDetailScreen() {
     <View className='border flex-1 bg-orange-100 dark:bg-slate-800'>
       <Row>
         <TextLink href="/" className=' bg-purple-500 bg-gradient-to-r from-yellow-500 to-gray-500 hover:from-yellow-700 hover:to-orange-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
-          <Text >
-            Back ID: {id}</Text>
+          <Text > Back ID: {id}</Text>
         </TextLink>
         {id === "edit" ? (createButton()) : null}
       </Row>

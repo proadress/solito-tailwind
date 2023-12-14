@@ -2,12 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface ElementData {
     id: string;
+    name: string;
+    type: string;//text,input,get,post
     value: string;
+    post: string,
     color: string;
     fontsize: number;
     x: number;
     y: number;
-
 }
 
 export const saveData = async (obj: ElementData) => {
@@ -19,6 +21,7 @@ export const saveData = async (obj: ElementData) => {
         // saving error
     }
 };
+
 
 export const getAllData = async () => {
     try {

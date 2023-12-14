@@ -7,13 +7,9 @@ const baseurl = local ? "http://127.0.0.1:8000" : "https://nextjs-fastapi-starte
 export const fetchGet = (api: string) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-
-
     useEffect(() => {
         fetchData();
     }, []);
-
     const fetchData = async () => {
         try {
             const response = await fetch(baseurl + api);
@@ -27,15 +23,11 @@ export const fetchGet = (api: string) => {
         } catch (error: any) {
             // Handle error
             console.error('Error fetching data:', error);
-            setError(error.message || 'An error occurred while fetching data.');
         } finally {
             setLoading(false);
         }
     };
-
-
-
-    return { data, loading, error };
+    return { data, loading };
 };
 
 export const fetchPost = (api: string, id: string, value: string) => {
