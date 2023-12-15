@@ -5,6 +5,7 @@ import { MotiLink } from 'solito/moti'
 import { useState } from 'react';
 import { Pressable } from 'react-native';
 import { useButton } from 'app/components/models/Button';
+import { clear } from 'app/components/models/localStorge';
 
 export interface User {
   _id: string;
@@ -56,7 +57,11 @@ export function HomeScreen() {
       <View className="h-[32px]" />
 
       <Row className="space-x-8">
-
+        <Pressable onPress={async () => clear()}>
+          <Text selectable={false} className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+            clear
+          </Text>
+        </Pressable>
         <TextLink href="/user/use" className="dark:text-gray-50">use</TextLink>
         <MotiLink
           href="/user/edit"

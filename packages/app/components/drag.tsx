@@ -98,7 +98,6 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
         <Text selectable={false} className='dark:text-white'>get:</Text>
         <TextInput
           value={edit.value}
-          style={{ color: data.color, fontSize: data.fontsize }}
           className='dark:text-white'
           onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
         />
@@ -116,7 +115,6 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
         <Text selectable={false} className='dark:text-white'>post:</Text>
         <TextInput
           value={edit.value}
-          style={{ color: data.color, fontSize: data.fontsize }}
           className='dark:text-white'
           onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
         />
@@ -251,7 +249,6 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
         <Text selectable={false} className='dark:text-white'>{key}:</Text>
         <TextInput
           key={key}
-          placeholder={key}
           value={post[key]}
           className='dark:text-white border dark:border-white'
           onChangeText={(text) => handleInputChange(key, text)}
@@ -268,10 +265,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
           press me
         </Text>
       </Pressable>
-      <Text
-        className="dark:text-gray-50"
-        style={{ fontSize: data.fontsize, color: data.color }}
-      >
+      <Text className="dark:text-white">
         {loading ? "loading" : postdata.toString()}
       </Text>
     </>
