@@ -30,47 +30,6 @@ export const fetchGet = (api: string) => {
     return { data, loading };
 };
 
-export const fetchPost = (api: string, id: string, value: string) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch(baseurl + api, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Add any other headers as needed
-                },
-                body: JSON.stringify({
-                    id: id,
-                    value: value,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const result = await response.json();
-            setData(result);
-        } catch (error: any) {
-            console.error('Error fetching data:', error);
-            setError(error.message || 'An error occurred while fetching data.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return { data, loading, error };
-};
-
 export const useFetchPost = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

@@ -5,7 +5,6 @@ import { PanResponder, StyleSheet, Animated } from 'react-native';
 import { saveData, ElementData } from './models/localStorge';
 import { Row } from 'app/design/layout';
 import { Pressable } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -16,7 +15,6 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
   const [Draging, setDraging] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const animatedHeight = new Animated.Value(isExpanded ? 40 : 0);
-  const [postData, setPostData] = useState({});
 
   const handleToggle = () => {
     Animated.timing(animatedHeight, {
@@ -50,94 +48,91 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
     },
   });
 
-  const DragTextElement = () => {
-    return (
-      < View className='border h-10 w-40 border-gray-500' >
+  const DragTextElement =
+
+    < View className='border h-10 w-40 border-gray-500' >
+      <Row>
+        <Pressable onPress={handleToggle}>
+          <View className=' bg-white'>
+            <Text selectable={false}> = </Text>
+          </View>
+        </Pressable>
+        <TextInput
+          value={edit.value}
+          style={{ color: data.color, fontSize: data.fontsize }}
+          className='dark:text-white'
+          onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+        />
+      </Row>
+      <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
         <Row>
-          <Pressable onPress={handleToggle}>
-            <View className=' bg-white'>
-              <Text> = </Text>
-            </View>
-          </Pressable>
+          <Text selectable={false} className='dark:text-white font-bold'>color:</Text>
           <TextInput
-            value={edit.value}
-            style={{ color: data.color, fontSize: data.fontsize }}
+            value={edit.color}
             className='dark:text-white'
-            onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+            onChangeText={(newText) => { setEdit({ ...edit, color: newText }); }}
           />
         </Row>
-        <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
-          <Row>
-            <Text className='dark:text-white font-bold'>color:</Text>
-            <TextInput
-              value={edit.color}
-              className='dark:text-white'
-              onChangeText={(newText) => { setEdit({ ...edit, color: newText }); }}
-            />
-          </Row>
-          <Row>
-            <Text className='dark:text-white font-bold'>size:</Text>
-            <TextInput
-              value={edit.fontsize.toString()}
-              className='dark:text-white'
-              keyboardType="numeric"
-              onChangeText={(newText) => {
-                setEdit({
-                  ...edit, fontsize:
-                    newText ? parseInt(newText, 10) : 0
-                });
-              }}
-            />
-          </Row>
-        </Animated.View>
-      </View >)
-  };
-
-
-  const DragGetElement = () => {
-    return (
-      < View className='border h-10 w-40 border-gray-500' >
         <Row>
-          <Text className='dark:text-white'>get:</Text>
+          <Text selectable={false} className='dark:text-white font-bold'>size:</Text>
           <TextInput
-            value={edit.value}
-            style={{ color: data.color, fontSize: data.fontsize }}
+            value={edit.fontsize.toString()}
             className='dark:text-white'
-            onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+            keyboardType="numeric"
+            onChangeText={(newText) => {
+              setEdit({
+                ...edit, fontsize:
+                  newText ? parseInt(newText, 10) : 0
+              });
+            }}
           />
         </Row>
-      </View >)
-  };
+      </Animated.View>
+    </View >
 
-  const DragPostElement = () => {
-    return (
-      < View className='border h-10 w-40 border-gray-500' >
+
+
+  const DragGetElement =
+    < View className='border h-10 w-40 border-gray-500' >
+      <Row>
+        <Text selectable={false} className='dark:text-white'>get:</Text>
+        <TextInput
+          value={edit.value}
+          style={{ color: data.color, fontSize: data.fontsize }}
+          className='dark:text-white'
+          onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+        />
+      </Row>
+    </View >
+
+  const DragPostElement =
+    < View className='border h-10 w-40 border-gray-500' >
+      <Row>
+        <Pressable onPress={handleToggle}>
+          <View className=' bg-white'>
+            <Text selectable={false}> = </Text>
+          </View>
+        </Pressable>
+        <Text selectable={false} className='dark:text-white'>post:</Text>
+        <TextInput
+          value={edit.value}
+          style={{ color: data.color, fontSize: data.fontsize }}
+          className='dark:text-white'
+          onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+        />
+      </Row>
+      <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
         <Row>
-          <Pressable onPress={handleToggle}>
-            <View className=' bg-white'>
-              <Text> = </Text>
-            </View>
-          </Pressable>
-          <Text className='dark:text-white'>post:</Text>
+          <Text selectable={false} className='dark:text-white font-bold'>id:</Text>
           <TextInput
-            value={edit.value}
-            style={{ color: data.color, fontSize: data.fontsize }}
+            value={edit.post}
             className='dark:text-white'
-            onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+            onChangeText={(newText) => { setEdit({ ...edit, post: newText }); }}
           />
         </Row>
-        <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
-          <Row>
-            <Text className='dark:text-white font-bold'>id:</Text>
-            <TextInput
-              value={edit.post}
-              className='dark:text-white'
-              onChangeText={(newText) => { setEdit({ ...edit, post: newText }); }}
-            />
-          </Row>
-        </Animated.View>
-      </View >)
-  };
+      </Animated.View>
+    </View >
+
 
 
 
@@ -149,9 +144,10 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
         height: 0,
       }}
       {...panResponder.panHandlers}>
-      {data.type == "text" ? <DragTextElement /> :
-        data.type == "get" ? <DragGetElement /> :
-          data.type == "post" ? <DragPostElement /> : null}
+      {data.type === "text" ? DragTextElement :
+        data.type === "get" ? DragGetElement :
+          data.type === "post" ? DragPostElement : null}
+
     </Animated.View >
   );
 };
@@ -180,9 +176,6 @@ const TextElement: React.FC<{ data: ElementData }> = ({ data }) => {
 const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
   const [getdata, setGetData] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    fetchData();
-  }, []);
   const fetchData = async () => {
     try {
       const response = await fetch(data.value);
@@ -201,12 +194,19 @@ const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
     }
   };
   return (
-    <Text
-      className="dark:text-gray-50"
-      style={{ fontSize: data.fontsize, color: data.color }}
-    >
-      {loading ? "loading" : getdata.toString()}
-    </Text>
+    <>
+      <Pressable onPress={fetchData}>
+        <Text selectable={false} className='w-20 h-5 bg-slate-500'>
+          press me
+        </Text>
+      </Pressable>
+      <Text
+        className="dark:text-gray-50"
+        style={{ fontSize: data.fontsize, color: data.color }}
+      >
+        {loading ? "loading" : getdata.toString()}
+      </Text>
+    </>
   )
 }
 const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
@@ -227,7 +227,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
       });
       const result = await response.json();
       console.log(result);
-      
+
       setPostData(result)
     } catch (error: any) {
       console.error('Error fetching data:', error);
@@ -248,7 +248,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
   const renderTextInputs = () => {
     return Object.keys(post).map((key) => (
       <Row>
-        <Text className='dark:text-white'>{key}:</Text>
+        <Text selectable={false} className='dark:text-white'>{key}:</Text>
         <TextInput
           key={key}
           placeholder={key}
@@ -264,7 +264,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
     <>
       {renderTextInputs()}
       <Pressable onPress={fetchPost}>
-        <Text className='w-20 h-5 bg-slate-500'>
+        <Text selectable={false} className='w-20 h-5 bg-slate-500'>
           press me
         </Text>
       </Pressable>
