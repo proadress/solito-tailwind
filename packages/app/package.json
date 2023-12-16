@@ -8,7 +8,7 @@
     "moti": "latest",
     "nativewind": "^2.0.11",
     "next-themes": "^0.2.1",
-    "solito": "4.0.1"
+    "solito": "4.2.0"
   },
   "sideEffects": false
 }

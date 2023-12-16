@@ -6,7 +6,7 @@
 
 # cd ../..
 # cd packages/app
-# yarn add @react-native-async-storage/async-storage @types/uuid
+# yarn add expo-image
 
 # cd ../..
 # cd apps/expo
@@ -15,3 +15,8 @@
 # eas login
 # eas build:configure
 # eas build
+yarn upgrade solito
+yarn upgrade --latest
+yarn upgrade
+yarn set version latest
+

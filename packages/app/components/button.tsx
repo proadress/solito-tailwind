@@ -1,8 +1,6 @@
 import { useFetchPost } from "./fetchFunc";
 import { clear, getAllData, saveData, ElementData } from "./localStorge";
 
-
-
 export const useButton = () => {
     const { fetchPost, loading, error } = useFetchPost();
 
@@ -33,20 +31,6 @@ export const useButton = () => {
             console.error('Error fetching data:', error);
         }
     }
-    const signinButton = async (id: string, password: string) => {
-        try {
-            const postData = { id: id, password: password };
-            const result = await fetchPost('/auth/signin', postData);
-            console.log(result);
-            if (result.message === 'success')
-                return result.user;
-            return {
-                name: 'error'
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
 
-    return { updateButton, getButton, signinButton }
+    return { updateButton, getButton };
 }

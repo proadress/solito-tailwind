@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const local = false;
-const baseurl = local ? "http://127.0.0.1:8000" : "https://nextjs-fastapi-starter-nine-xi.vercel.app";
+export const baseurl = local ? "http://127.0.0.1:8000" : "https://nextjs-fastapi-starter-nine-xi.vercel.app";
 
 
 export const fetchGet = (api: string) => {
@@ -42,7 +42,6 @@ export const useFetchPost = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Add any other headers as needed
                 },
                 body: JSON.stringify(data),
             });

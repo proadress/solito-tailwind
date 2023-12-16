@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View } from 'app/design/view';
 import { Text, TextInput } from 'app/design/typography'
 import { PanResponder, StyleSheet, Animated } from 'react-native';
-import { saveData, ElementData } from './models/localStorge';
+import { saveData, ElementData } from './localStorge';
 import { Row } from 'app/design/layout';
 import { Pressable } from 'react-native';
 
@@ -60,24 +60,21 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
         <TextInput
           value={edit.value}
           style={{ color: data.color, fontSize: data.fontsize }}
-          className='dark:text-white'
           onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
         />
       </Row>
       <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
         <Row>
-          <Text selectable={false} className='dark:text-white font-bold'>color:</Text>
+          <Text selectable={false} className='font-bold'>color:</Text>
           <TextInput
             value={edit.color}
-            className='dark:text-white'
             onChangeText={(newText) => { setEdit({ ...edit, color: newText }); }}
           />
         </Row>
         <Row>
-          <Text selectable={false} className='dark:text-white font-bold'>size:</Text>
+          <Text selectable={false} className='font-bold'>size:</Text>
           <TextInput
             value={edit.fontsize.toString()}
-            className='dark:text-white'
             keyboardType="numeric"
             onChangeText={(newText) => {
               setEdit({
@@ -95,10 +92,9 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
   const DragGetElement =
     < View className='border h-10 w-40 border-gray-500' >
       <Row>
-        <Text selectable={false} className='dark:text-white'>get:</Text>
+        <Text selectable={false}>get:</Text>
         <TextInput
           value={edit.value}
-          className='dark:text-white'
           onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
         />
       </Row>
@@ -112,19 +108,17 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
             <Text selectable={false}> = </Text>
           </View>
         </Pressable>
-        <Text selectable={false} className='dark:text-white'>post:</Text>
+        <Text selectable={false} >post:</Text>
         <TextInput
           value={edit.value}
-          className='dark:text-white'
           onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
         />
       </Row>
       <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
         <Row>
-          <Text selectable={false} className='dark:text-white font-bold'>id:</Text>
+          <Text selectable={false} className='font-bold'>id:</Text>
           <TextInput
             value={edit.post}
-            className='dark:text-white'
             onChangeText={(newText) => { setEdit({ ...edit, post: newText }); }}
           />
         </Row>
@@ -162,13 +156,16 @@ export const UseElement: React.FC<{ data: ElementData }> = ({ data }) => {
 };
 
 const TextElement: React.FC<{ data: ElementData }> = ({ data }) => {
-  return (
-    <Text
-      className="dark:text-gray-50"
-      style={{ fontSize: data.fontsize, color: data.color }}
-    >
-      {data.value}
-    </Text>
+  return (<>
+    {data.color == "" ?
+      <Text style={{ fontSize: data.fontsize }}>
+        {data.value}
+      </Text> :
+      <Text style={{ fontSize: data.fontsize, color: data.color }}>
+        {data.value}
+      </Text>
+    }
+  </>
   )
 }
 const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
@@ -198,10 +195,7 @@ const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
           press me
         </Text>
       </Pressable>
-      <Text
-        className="dark:text-gray-50"
-        style={{ fontSize: data.fontsize, color: data.color }}
-      >
+      <Text>
         {loading ? "loading" : getdata.toString()}
       </Text>
     </>
@@ -246,11 +240,11 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
   const renderTextInputs = () => {
     return Object.keys(post).map((key) => (
       <Row>
-        <Text selectable={false} className='dark:text-white'>{key}:</Text>
+        <Text selectable={false} >{key}:</Text>
         <TextInput
           key={key}
           value={post[key]}
-          className='dark:text-white border dark:border-white'
+          className='border dark:border-white'
           onChangeText={(text) => handleInputChange(key, text)}
         />
       </Row>
@@ -265,7 +259,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
           press me
         </Text>
       </Pressable>
-      <Text className="dark:text-white">
+      <Text>
         {loading ? "loading" : postdata.toString()}
       </Text>
     </>

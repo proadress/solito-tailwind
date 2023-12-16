@@ -3,17 +3,18 @@ import { Text as NativeText, Platform, Linking, TextStyle, TextInput as NativeTe
 import { styled, StyledProps } from 'nativewind'
 import { TextLink as SolitoTextLink } from 'solito/link'
 
-export const Text = styled(NativeText)
+
+export const Text = styled(NativeText, 'dark:text-white')
 
 /**
  * You can use this pattern to create components with default styles
  */
-export const P = styled(NativeText, 'text-base text-black my-4')
+export const P = styled(NativeText, 'text-base text-black my-4 dark:text-white')
 
 /**
  * Components can have defaultProps and styles
  */
-export const H1 = styled(NativeText, 'text-3xl font-extrabold my-4')
+export const H1 = styled(NativeText, 'text-3xl font-extrabold my-4 dark:text-white')
 H1.defaultProps = {
   accessibilityLevel: 1,
   accessibilityRole: 'header',
@@ -53,7 +54,7 @@ export const A = forwardRef<NativeText, StyledProps<AProps>>(function A(
   return (
     <Text
       accessibilityRole="link"
-      className={`text-blue-500 hover:underline ${className}`}
+      className={`text-blue-500 hover:underline dark:text-white ${className}`}
       {...props}
       {...nativeAProps}
       ref={ref}
@@ -74,6 +75,7 @@ export const TextLink = styled<
       {...props}
     />
   )
-}, 'text-base font-bold hover:underline text-blue-500')
+}, 'text-base font-bold hover:underline text-blue-500 dark:text-white')
 
-export const TextInput = styled(NativeTextInput)
+export const TextInput = styled(NativeTextInput, 'dark:text-white')
+

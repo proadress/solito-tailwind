@@ -5,9 +5,9 @@ import { View } from 'app/design/view';
 import { Pressable } from 'react-native';
 import { Row } from 'app/design/layout';
 import { DraggableElement, UseElement } from 'app/components/drag';
-import { clear, getAllData, saveData, ElementData } from 'app/components/models/localStorge';
+import { clear, getAllData, saveData, ElementData } from 'app/components/localStorge';
 import { v4 } from 'uuid';
-import { useButton } from 'app/components/models/Button';
+import { useButton } from 'app/components/button';
 
 const { useParam } = createParam<{ id: string }>();
 
@@ -31,7 +31,6 @@ export function UserDetailScreen() {
   const addNewItem = async (type: string) => {
     const obj: ElementData = {
       id: v4(),
-      name: "",
       type: type,
       value: "請輸入",
       post: JSON.stringify({ a: 3, b: 4, v: "是最後答案" }),
@@ -82,21 +81,6 @@ export function UserDetailScreen() {
             ReBuild
           </Text>
         </Pressable>
-
-        {/* <Pressable onPress={async () => await updateButton(editText)}>
-          <Text className='bg-red-500 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-700 hover:to-orange-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
-            Save
-          </Text>
-        </Pressable>
-
-        <Pressable onPress={async () => { await clear(); await reBuild(); await getButton(editText); await reBuild(); }}>
-          <Text className=' bg-yellow-500 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-700 hover:to-orange-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
-            Restore
-          </Text>
-        </Pressable> */}
-
-
-
       </Row>
     );
   };
