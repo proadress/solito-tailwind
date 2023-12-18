@@ -1,14 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View } from 'app/design/view';
 import { Text, TextInput } from 'app/design/typography'
-import { PanResponder, StyleSheet, Animated } from 'react-native';
-import { saveData, ElementData } from './localStorge';
+import { PanResponder, Animated } from 'react-native';
+import { ElementData } from './localStorge';
 import { Row } from 'app/design/layout';
 import { Pressable } from 'react-native';
+import { fetchGet, fetchPost } from './fetchFunc';
 
-
-
-export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
+export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: ElementData) => Promise<void> }> = ({ data, saveElement }) => {
   const pan = useRef<any>(new Animated.ValueXY({ x: data.x, y: data.y })).current;
   const initialPosition = useRef({ x: 0, y: 0 });
   const [edit, setEdit] = useState(data);
@@ -25,9 +24,8 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
     setIsExpanded(!isExpanded);
   };
 
-
   useEffect(() => {
-    saveData({ ...edit, x: pan.x._value, y: pan.y._value });
+    saveElement({ ...edit, x: pan.x._value, y: pan.y._value });
   }, [edit, Draging]);
 
   const panResponder = PanResponder.create({
@@ -49,7 +47,6 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
   });
 
   const DragTextElement =
-
     < View className='border h-10 w-40 border-gray-500' >
       <Row>
         <Pressable onPress={handleToggle}>
@@ -86,9 +83,6 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
         </Row>
       </Animated.View>
     </View >
-
-
-
   const DragGetElement =
     < View className='border h-10 w-40 border-gray-500' >
       <Row>
@@ -124,11 +118,6 @@ export const DraggableElement: React.FC<{ data: ElementData }> = ({ data }) => {
         </Row>
       </Animated.View>
     </View >
-
-
-
-
-
   return (
     <Animated.View
       style={{
@@ -169,66 +158,23 @@ const TextElement: React.FC<{ data: ElementData }> = ({ data }) => {
   )
 }
 const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
-  const [getdata, setGetData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const fetchData = async () => {
-    try {
-      const response = await fetch(data.value);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      setGetData(result);
-    } catch (error: any) {
-      // Handle error
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { getdata, getloading, startGet } = fetchGet(data.value);
   return (
     <>
-      <Pressable onPress={fetchData}>
+      <Pressable onPress={startGet}>
         <Text selectable={false} className='w-20 h-5 bg-slate-500'>
           press me
         </Text>
       </Pressable>
       <Text>
-        {loading ? "loading" : getdata.toString()}
+        {getloading ? "loading" : getdata.toString()}
       </Text>
     </>
   )
 }
 const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
-  const [postdata, setPostData] = useState("none")
-  const [loading, setLoading] = useState(false);
+  const { postdata, loading, startPost } = fetchPost(data.value);
   const [post, setPost] = useState(JSON.parse(data.post))
-
-  const fetchPost = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(data.value, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any other headers as needed
-        },
-        body: JSON.stringify(post),
-      });
-      const result = await response.json();
-      console.log(result);
-
-      setPostData(result)
-    } catch (error: any) {
-      console.error('Error fetching data:', error);
-      setPostData('error');
-      throw error; // rethrow the error to let the caller handle it
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleInputChange = (key: string, text: string) => {
     setPost((prevValues: any) => ({
@@ -254,7 +200,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
   return (
     <>
       {renderTextInputs()}
-      <Pressable onPress={fetchPost}>
+      <Pressable onPress={() => { startPost(JSON.stringify(post)) }}>
         <Text selectable={false} className='w-20 h-5 bg-slate-500'>
           press me
         </Text>

@@ -1,65 +1,53 @@
 import { useState, useEffect } from 'react';
 
-const local = false;
-export const baseurl = local ? "http://127.0.0.1:8000" : "https://nextjs-fastapi-starter-nine-xi.vercel.app";
-
+const local = true;
+const baseurl = local ? "http://127.0.0.1:8000" : "https://nextjs-fastapi-starter-nine-xi.vercel.app";
 
 export const fetchGet = (api: string) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        fetchData();
-    }, []);
-    const fetchData = async () => {
+    const [getdata, setGetData] = useState('');
+    const [getloading, setLoading] = useState(true);
+    const startGet = async () => {
+        setLoading(true);
         try {
-            const response = await fetch(baseurl + api);
-
-            if (!response.ok) {
+            const response = await fetch(api);
+            if (!response.ok)
                 throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
             const result = await response.json();
-            setData(result);
+            setGetData(result)
         } catch (error: any) {
-            // Handle error
             console.error('Error fetching data:', error);
+            setGetData("error")
         } finally {
             setLoading(false);
         }
     };
-    return { data, loading };
+    return { getdata, getloading, startGet };
 };
 
-export const useFetchPost = () => {
+export const fetchPost = (api: string) => {
+    const [postdata, setPostData] = useState("none")
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
-    const fetchPost = async (api: string, data: object) => {
+    const startPost = async (inputdata: string) => {
         setLoading(true);
-
         try {
-            const response = await fetch(`${baseurl}${api}`, {
+            const response = await fetch(api, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    // Add any other headers as needed
                 },
-                body: JSON.stringify(data),
+                body: inputdata,
             });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
             const result = await response.json();
-            return result;
+            console.log(result);
+            setPostData(result);
         } catch (error: any) {
             console.error('Error fetching data:', error);
-            setError(error.message || 'An error occurred while fetching data.');
-            throw error; // rethrow the error to let the caller handle it
+            setPostData('error');
         } finally {
             setLoading(false);
         }
     };
-
-    return { fetchPost, loading, error };
+    return { postdata, loading, startPost };
 };
