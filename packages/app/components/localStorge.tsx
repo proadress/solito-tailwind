@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
 export interface ElementData {
@@ -150,7 +150,7 @@ export const projectManager = () => {
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 // 上下文提供者
-export const AuthProvider = ({ children }) => {
+export const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
     const [user, setUser] = useState<User>();
     const checkUser = async () => {
         try {
