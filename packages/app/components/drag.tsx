@@ -115,22 +115,22 @@ const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
 }
 const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
   const { postdata, loading, startPost } = fetchPost(data.value);
-  const [post, setPost] = useState<object>(JSON.parse(data.post));
+  const [post, setPost] = useState<Record<string, string | number>>(JSON.parse(data.post));
 
   const renderTextInputs = () => {
     return Object.keys(post).map((key) => (
-      <Row key={key}> {/* 確保在 map 中的每個元素上都有一個唯一的 key */}
+      <Row key={key}>
         <Text selectable={false}>{key}:</Text>
         {typeof post[key] === "number" ? (
           <TextInput
             keyboardType='numeric'
-            value={post[key]?.toString()}
+            value={post[key].toString()}
             className='border dark:border-white'
             onChangeText={(text) => {
               let ntext = parseInt(text, 10);
               if (!ntext) ntext = 1;
               console.log(ntext, typeof ntext);
-              setPost((prevValues: any) => ({
+              setPost((prevValues) => ({
                 ...prevValues,
                 [key]: ntext,
               }));
@@ -138,10 +138,10 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
           />
         ) : (
           <TextInput
-            value={post[key]}
+            value={post[key]?.toString()}
             className='border dark:border-white'
             onChangeText={(text) => {
-              setPost((prevValues: any) => ({
+              setPost((prevValues) => ({
                 ...prevValues,
                 [key]: text,
               }));
@@ -152,7 +152,6 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
     ));
   };
 
-
   return (
     <>
       {renderTextInputs()}
@@ -162,11 +161,10 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
         </Text>
       </Pressable>
       {loading ?
-        < Text > Loading</Text >
+        <Text>Loading</Text>
         :
         postdata.toString().includes('<') ? <RenderHtml source={postdata.toString()} /> : <Text>{postdata.toString()}</Text>
       }
     </>
-  )
-}
-
+  );
+};
