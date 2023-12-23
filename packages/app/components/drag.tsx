@@ -6,7 +6,7 @@ import { ElementData } from './localStorge';
 import { Row } from 'app/design/layout';
 import { Pressable } from 'react-native';
 import { fetchGet, fetchPost } from './fetchFunc';
-import RenderHtml from './rander-html';
+import { RenderHtml } from './rander-html';
 
 export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: ElementData) => Promise<void> }> = ({ data, saveElement }) => {
   const pan = useRef<any>(new Animated.ValueXY({ x: data.x, y: data.y })).current;
@@ -47,58 +47,6 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
     },
   });
 
-  const DragTextElement =
-    < View className='h-10' >
-      <Row>
-        <Pressable onPress={handleToggle}>
-          <View className=' bg-white'>
-            <Text selectable={false}> = </Text>
-          </View>
-        </Pressable>
-        <TextInput
-          value={edit.value}
-          style={{ color: data.color, fontSize: data.fontsize }}
-          onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
-          onBlur={() => saveElement(edit)}
-        />
-      </Row>
-      <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
-        <Row>
-          <Text selectable={false} className='font-bold'>color:</Text>
-          <TextInput
-            value={edit.color}
-            onChangeText={(newText) => { setEdit({ ...edit, color: newText }); }}
-            onBlur={() => saveElement(edit)}
-          />
-        </Row>
-        <Row>
-          <Text selectable={false} className='font-bold'>size:</Text>
-          <TextInput
-            value={edit.fontsize.toString()}
-            keyboardType="numeric"
-            onChangeText={(newText) => {
-              setEdit({
-                ...edit, fontsize:
-                  newText ? parseInt(newText, 10) : 0
-              });
-            }}
-            onBlur={() => saveElement(edit)}
-          />
-        </Row>
-      </Animated.View>
-    </View >
-  const DragGetElement =
-    < View className='h-10' >
-      <Row>
-        <Text selectable={false}>get:</Text>
-        <TextInput
-          value={edit.value}
-          onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
-          onBlur={() => saveElement(edit)}
-        />
-      </Row>
-    </View >
-
   const DragPostElement =
     < View className='h-10' >
       <Row>
@@ -132,10 +80,17 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
         height: 0,
       }}
       {...panResponder.panHandlers}>
-      {data.type === "text" ? DragTextElement :
-        data.type === "get" ? DragGetElement :
-          data.type === "post" ? DragPostElement : null}
-
+      {data.type === "post" ? DragPostElement :
+        < View className='h-10' >
+          <Row>
+            <Text selectable={false}>{data.type}:</Text>
+            <TextInput
+              value={edit.value}
+              onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+              onBlur={() => saveElement(edit)}
+            />
+          </Row>
+        </View >}
     </Animated.View >
   );
 };
@@ -143,7 +98,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
 
 export const UseElement: React.FC<{ data: ElementData }> = ({ data }) => {
   return (
-    <View className='w-[200px] absolute' style={{ transform: [{ translateX: data.x + 15 }, { translateY: data.y }] }}>
+    <View className='w-[200px] absolute' style={{ transform: [{ translateX: data.x + 30 }, { translateY: data.y }] }}>
       {data.type == "text" ? <TextElement data={data} /> :
         data.type == "get" ? <GetElement data={data} /> :
           data.type == "post" ? <PostElement data={data} /> : null}
@@ -152,16 +107,8 @@ export const UseElement: React.FC<{ data: ElementData }> = ({ data }) => {
 };
 
 const TextElement: React.FC<{ data: ElementData }> = ({ data }) => {
-  return (<>
-    {data.color == "" ?
-      <Text style={{ fontSize: data.fontsize }}>
-        {data.value}
-      </Text> :
-      <Text style={{ fontSize: data.fontsize, color: data.color }}>
-        {data.value}
-      </Text>
-    }
-  </>
+  return (
+    data.value.includes('<') ? <RenderHtml source={data.value} /> : <Text>{data.value}</Text>
   )
 }
 const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
@@ -173,7 +120,11 @@ const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
           press me
         </Text>
       </Pressable>
-      <RenderHtml source={getloading ? "loading" : getdata.toString()} />
+      {getloading ?
+        < Text > Loading</Text >
+        :
+        getdata.toString().includes('<') ? <RenderHtml source={getdata.toString()} /> : <Text>{getdata.toString()}</Text>
+      }
     </>
   )
 }
@@ -210,7 +161,11 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
           press me
         </Text>
       </Pressable>
-      <RenderHtml source={loading ? "loading" : postdata.toString()} />
+      {loading ?
+        < Text > Loading</Text >
+        :
+        postdata.toString().includes('<') ? <RenderHtml source={postdata.toString()} /> : <Text>{postdata.toString()}</Text>
+      }
     </>
   )
 }

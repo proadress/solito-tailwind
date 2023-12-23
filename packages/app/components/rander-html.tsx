@@ -4,11 +4,12 @@ import dynamic from 'next/dynamic';
 import { useWindowDimensions } from 'react-native';
 import { View } from 'app/design/view';
 
+
 const DynamicHTML = dynamic(() => import('react-native-render-html'), {
     ssr: false,
 });
 
-const RenderHtml: React.FC<{ source: string }> = ({ source }) => {
+export const RenderHtml: React.FC<{ source: string }> = ({ source }) => {
     const [isModuleLoaded, setIsModuleLoaded] = useState(false);
     const { width } = useWindowDimensions();
 
@@ -31,5 +32,3 @@ const RenderHtml: React.FC<{ source: string }> = ({ source }) => {
         </View>
     );
 };
-
-export default RenderHtml;

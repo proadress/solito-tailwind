@@ -7,9 +7,7 @@ export interface ElementData {
     projectID: string
     type: string;//text,input,get,post
     value: string;
-    post: string,
-    color: string;
-    fontsize: number;
+    post: string;
     x: number;
     y: number;
 };
