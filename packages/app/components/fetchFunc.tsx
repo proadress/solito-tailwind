@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const local = true;
+const local = false;
 export const baseurl = local ? "http://127.0.0.1:8000" : "https://nextjs-fastapi-starter-nine-xi.vercel.app";
 
 export const fetchGet = (api: string) => {

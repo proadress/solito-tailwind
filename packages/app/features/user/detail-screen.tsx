@@ -36,7 +36,7 @@ export function UserDetailScreen() {
       id: v4(),
       projectID: "project1",
       type: type,
-      value: type === "text" ? "文字方塊" : type === "get" ? "https://nextjs-fastapi-starter-nine-xi.vercel.app/" : type === "post" ? "https://nextjs-fastapi-starter-nine-xi.vercel.app/post/test" : "error",
+      value: type === "text" ? "文字方塊" : type === "get" ? "https://nextjs-fastapi-starter-nine-xi.vercel.app/test/get" : type === "post" ? "https://nextjs-fastapi-starter-nine-xi.vercel.app/test/post" : "error",
       post: JSON.stringify({ a: 3, b: 4, v: "是最後答案" }),
       color: "",
       fontsize: 15,
