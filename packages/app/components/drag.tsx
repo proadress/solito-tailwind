@@ -59,7 +59,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
         <TextInput
           value={edit.value}
           onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
-          onBlur={() => saveElement(edit)}
+          onBlur={() => saveElement({ ...edit, x: pan.x._value, y: pan.y._value })}
         />
       </Row>
       <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
@@ -68,7 +68,8 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
           <TextInput
             value={edit.post}
             onChangeText={(newText) => { setEdit({ ...edit, post: newText }); }}
-            onBlur={() => saveElement(edit)}
+            onBlur={() => saveElement({ ...edit, x: pan.x._value, y: pan.y._value })
+            }
           />
         </Row>
       </Animated.View>
@@ -87,7 +88,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
             <TextInput
               value={edit.value}
               onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
-              onBlur={() => saveElement(edit)}
+              onBlur={() => saveElement({ ...edit, x: pan.x._value, y: pan.y._value })}
             />
           </Row>
         </View >}
@@ -130,25 +131,42 @@ const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
 }
 const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
   const { postdata, loading, startPost } = fetchPost(data.value);
-  const [post, setPost] = useState(JSON.parse(data.post))
+  const [post, setPost] = useState<object>(JSON.parse(data.post));
 
-  const handleInputChange = (key: string, text: string) => {
-    setPost((prevValues: any) => ({
-      ...prevValues,
-      [key]: text,
-    }));
-  };
+  useEffect(() => {
+    Object.keys(post).map((key) => (
+      console.log()))
+  }, [])
 
   const renderTextInputs = () => {
     return Object.keys(post).map((key) => (
       <Row>
         <Text selectable={false} >{key}:</Text>
-        <TextInput
+        {typeof post[key] === "number" ? <TextInput
+          keyboardType='numeric'
+          key={key}
+          value={post[key].toString()}
+          className='border dark:border-white'
+          onChangeText={(text) => {
+            let ntext = parseInt(text, 10);
+            if (!ntext) ntext = 1;
+            console.log(ntext, typeof ntext)
+            setPost((prevValues: any) => ({
+              ...prevValues,
+              [key]: ntext,
+            }));
+          }}
+        /> : <TextInput
           key={key}
           value={post[key]}
           className='border dark:border-white'
-          onChangeText={(text) => handleInputChange(key, text)}
-        />
+          onChangeText={(text) => {
+            setPost((prevValues: any) => ({
+              ...prevValues,
+              [key]: text,
+            }));
+          }}
+        />}
       </Row>
     ));
   };
