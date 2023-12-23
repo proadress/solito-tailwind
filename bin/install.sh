@@ -24,3 +24,5 @@ eas update
 eas build 
 
 eas build --profile development --platform android
+
+npx -y expo-doctor
