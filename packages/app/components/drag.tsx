@@ -124,7 +124,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
         {typeof post[key] === "number" ? (
           <TextInput
             keyboardType='numeric'
-            value={post[key].toString()}
+            value={post[key]?.toString()}
             className='border dark:border-white'
             onChangeText={(text) => {
               let ntext = parseInt(text, 10);

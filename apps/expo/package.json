@@ -2,7 +2,7 @@
   "dependencies": {
     "app": "*",
     "expo": "^49.0.0",
-    "expo-dev-client": "^2.4.12",
+    "expo-dev-client": "~2.4.12",
     "expo-image": "~1.3.5",
     "expo-linking": "~5.0.2",
     "expo-router": "^2.0.5",
