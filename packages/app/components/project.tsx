@@ -8,46 +8,46 @@ import { View } from "app/design/view";
 
 
 export const ProjectCol: React.FC = () => {
-    const { projects, saveProject, addProject, deleteProject, clear } = projectManager();
+    const { projects, saveProject, addProject, deleteProject, clear, getAllUidData } = projectManager();
     const [name, setName] = useState("");
 
 
     return (
         <>
-
             <View className="h-[10px]"></View>
-            <Row className=" space-x-8">
-                <Row>
-                    <TextInput
-                        onChangeText={(newText) => setName(newText)}
-                        value={name}
-                        // className="border dark:border-white"
-                        className=' bg-neutral-300 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'
-                        placeholder="(請輸入專案名稱)"
-                    ></TextInput>
-                    <Pressable onPress={() => {
-                        if (name !== "")
-                            addProject(name);
-                    }}>
-                        <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
-                            新專案
-                        </Text>
-                    </Pressable>
-                </Row>
+            <Row className=" space-x-2">
+                <TextInput
+                    onChangeText={(newText) => setName(newText)}
+                    value={name}
+                    // className="border dark:border-white"
+                    className=' bg-neutral-300 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'
+                    placeholder="(請輸入專案名稱)"
+                ></TextInput>
+                <Pressable onPress={() => {
+                    if (name !== "")
+                        addProject(name);
+                }}>
+                    <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+                        新專案
+                    </Text>
+                </Pressable>
+                <Pressable onPress={getAllUidData}>
+                    <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+                        刷新
+                    </Text>
+                </Pressable>
                 <Pressable onPress={async () => clear()}>
                     <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
-                        全部清除
+                        清除
                     </Text>
                 </Pressable>
             </Row>
             <View className="h-10"></View>
-            <View className=" space-y-4">
-                {projects ? (
-                    projects.map((project) => <Project key={project.id} project={project} del={deleteProject} saveProject={saveProject} />)
-                ) : (
-                    <Text>no project</Text>
-                )}
-            </View>
+            {projects ? (
+                projects.map((project) => <Project key={project.id} project={project} del={deleteProject} saveProject={saveProject} />)
+            ) : (
+                <Text>no project</Text>
+            )}
         </>
     )
 }
@@ -57,10 +57,10 @@ const Project: React.FC<{ project: ProjectData, saveProject: (id: string, value:
     useEffect(() => {
         setclip(project.value);
         console.log(project.value);
-    }, []);
+    }, [project]);
 
     return (
-        <View className="w-[250px] h-[60px] space-x-8 justify-center">
+        <View className="mt-1 w-[250px] h-[60px] space-x-8 justify-center">
             <Row className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
                 <TextLink href={`/user/u${project.id}`} className=" my-2">
                     <H1 className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
@@ -77,7 +77,7 @@ const Project: React.FC<{ project: ProjectData, saveProject: (id: string, value:
                             saveProject(project.id, clip);
                             setclip(project.value);
                         }}
-                    ></TextInput>
+                    />
                     <View className=" w-[35px] h-[35px] items-center justify-center">
                         <TextLink href={`/user/e${project.id}`}>
                             <SolitoImage
@@ -91,7 +91,7 @@ const Project: React.FC<{ project: ProjectData, saveProject: (id: string, value:
                     <View className=" w-[35px] h-[35px] items-center justify-center">
                         <Pressable onPress={async () => {
                             console.log(project.id);
-                            del(project.id)
+                            del(project.id);
                         }}>
                             <SolitoImage
                                 src={require('./../assets/trash.png')}

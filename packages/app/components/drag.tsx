@@ -26,7 +26,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
   };
 
   useEffect(() => {
-    saveElement({ ...edit, x: pan.x._value, y: pan.y._value });
+    saveElement({ ...edit, x: parseInt(pan.x._value, 10), y: parseInt(pan.y._value, 10) });
   }, [Draging]);
 
   const panResponder = PanResponder.create({
