@@ -13,28 +13,17 @@ export interface ElementData {
     x: number;
     y: number;
 };
-interface AuthContextProps {
-    user?: User;
-    checkSignin: () => void;
-    saveUser: (obj: User) => void;
-};
-interface User {
-    email: string;
-    password: string;
-    name: string;
-    project: Project[];
-};
-export interface Project {
+
+export interface ProjectData {
     id: string
     name: string;
     value: string;
 };
 
 export const projectManager = () => {
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [projects, setProjects] = useState<ProjectData[]>([]);
     const [items, setItems] = useState<ElementData[]>([]);
     const [currentId, setCurrentId] = useState("");
-    let startTime = performance.now();
 
     useEffect(() => {
         console.log('start project');
@@ -70,7 +59,6 @@ export const projectManager = () => {
 
     const getAllUidData = async () => {
         try {
-            startTime = performance.now();
             const keys = await AsyncStorage.getAllKeys();
             // 如果 keys 不存在或是空陣列，直接返回空陣列
             if (!keys || keys.length === 0) {
@@ -78,10 +66,10 @@ export const projectManager = () => {
             }
             const multiGetResults = await AsyncStorage.multiGet(keys);
             // 使用 Array.map 將結果轉換為 Project 對象陣列
-            const data: Project[] = multiGetResults
+            const data: ProjectData[] = multiGetResults
                 .filter(([key, value]) => key !== null && key.length === 36 && value !== null)
                 .map(([key, value]) => {
-                    const storedProject: Project = JSON.parse(value!);
+                    const storedProject: ProjectData = JSON.parse(value!);
                     const { name, value: combinedValue } = storedProject;
                     return {
                         ...storedProject,
@@ -98,7 +86,7 @@ export const projectManager = () => {
 
 
     const addProject = async (name: string) => {
-        const project: Project = {
+        const project: ProjectData = {
             id: v4(),
             name: name,
             value: ""
@@ -140,61 +128,23 @@ export const projectManager = () => {
         });
         setProjects(p);
     };
+
+    const saveProject = (id: string, value: string) => {
+        const p = projects?.map((project) => {
+            if (project.id === id) {
+                project.value = value;
+                return project;
+            }
+            // 如果不是目標項目，保持原樣
+            return project;
+        });
+        setProjects(p);
+    };
+
     const clear = async () => {
         await AsyncStorage.clear();
         setProjects([]);
     }
-    return { projects, items, setItems, addProject, deleteProject, startPage, saveElement, clear, getAllUidData }
+    return { projects, items, setItems, addProject, deleteProject, startPage, saveElement, clear, getAllUidData, setProjects, saveProject }
 }
-// 創建上下文，並指定上下文的預設值
-export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-// 上下文提供者
-export const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
-    const [user, setUser] = useState<User>();
-    const checkUser = async () => {
-        try {
-            // 使用 await 等待異步操作完成
-            const userExists = await getUser();
-            setUser(userExists)
-        } catch (error) {
-            console.error('Error checking user:', error);
-        }
-    };
-
-    // 使用Effect進行初始化檢查
-    useEffect(() => {
-        // 呼叫異步函數
-        checkUser();
-    }, []); // 空的依賴數組表示只在組件第一次渲染時執行
-
-    const checkSignin = () => checkUser();
-    const saveUser = async (obj: User) => {
-        try {
-            console.log("setUser", obj);
-            await AsyncStorage.setItem("user", JSON.stringify(obj));
-        } catch (e) {
-            console.log(e);
-        };
-    }
-    return (
-        <AuthContext.Provider value={{ user, checkSignin, saveUser }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
-
-export const getUser = async (): Promise<User | undefined> => {
-    try {
-        const startTime = performance.now();
-        const userString = await AsyncStorage.getItem("user");
-        if (!userString) return undefined
-        const user = JSON.parse(userString) as User;
-        const t = (performance.now() - startTime).toFixed(2);
-        console.log("getUser", user, t, "ms");
-        return user;
-    } catch (e) {
-        console.log(e);
-    }
-    return undefined;
-}

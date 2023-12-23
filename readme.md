@@ -141,7 +141,7 @@ If you're installing a library with any native code, you must install it in `app
 
 ```sh
 cd apps/expo
-yarn add react-native-reanimated
+yarn add react-native-render-html
 
 cd ../..
 yarn

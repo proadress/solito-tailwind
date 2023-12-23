@@ -5,7 +5,7 @@ import { View } from 'app/design/view';
 import { Pressable } from 'react-native';
 import { Row } from 'app/design/layout';
 import { DraggableElement, UseElement } from 'app/components/drag';
-import { ElementData, projectManager, Project } from 'app/components/localStorge';
+import { ElementData, projectManager } from 'app/components/localStorge';
 import { v4 } from 'uuid';
 
 const { useParam } = createParam<{ id: string }>();
@@ -64,12 +64,12 @@ export function UserDetailScreen() {
           </Text>
         </Pressable>
         <Pressable onPress={() => addNewItem("get")}>
-          <Text selectable={false} className='bg-green-500 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-700 hover:to-green-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+          <Text selectable={false} className='bg-blue-500 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-700 hover:to-green-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
             AddGet
           </Text>
         </Pressable>
         <Pressable onPress={() => addNewItem("post")}>
-          <Text selectable={false} className='bg-pink-500 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-700 hover:to-red-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+          <Text selectable={false} className='bg-orange-500 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-700 hover:to-red-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
             AddPost
           </Text>
         </Pressable>

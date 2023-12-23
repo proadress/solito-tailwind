@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
 const local = true;
-const baseurl = local ? "http://127.0.0.1:8000" : "https://nextjs-fastapi-starter-nine-xi.vercel.app";
+export const baseurl = local ? "http://127.0.0.1:8000" : "https://nextjs-fastapi-starter-nine-xi.vercel.app";
 
 export const fetchGet = (api: string) => {
-    const [getdata, setGetData] = useState('');
-    const [getloading, setLoading] = useState(true);
+    const [getdata, setGetData] = useState('none');
+    const [getloading, setLoading] = useState(false);
     const startGet = async () => {
         setLoading(true);
         try {

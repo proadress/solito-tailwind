@@ -6,6 +6,7 @@ import { ElementData } from './localStorge';
 import { Row } from 'app/design/layout';
 import { Pressable } from 'react-native';
 import { fetchGet, fetchPost } from './fetchFunc';
+import RenderHtml from './rander-html';
 
 export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: ElementData) => Promise<void> }> = ({ data, saveElement }) => {
   const pan = useRef<any>(new Animated.ValueXY({ x: data.x, y: data.y })).current;
@@ -26,7 +27,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
 
   useEffect(() => {
     saveElement({ ...edit, x: pan.x._value, y: pan.y._value });
-  }, [edit, Draging]);
+  }, [Draging]);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -47,7 +48,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
   });
 
   const DragTextElement =
-    < View className='border h-10 w-40 border-gray-500' >
+    < View className='h-10' >
       <Row>
         <Pressable onPress={handleToggle}>
           <View className=' bg-white'>
@@ -58,6 +59,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
           value={edit.value}
           style={{ color: data.color, fontSize: data.fontsize }}
           onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+          onBlur={() => saveElement(edit)}
         />
       </Row>
       <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
@@ -66,6 +68,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
           <TextInput
             value={edit.color}
             onChangeText={(newText) => { setEdit({ ...edit, color: newText }); }}
+            onBlur={() => saveElement(edit)}
           />
         </Row>
         <Row>
@@ -79,23 +82,25 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
                   newText ? parseInt(newText, 10) : 0
               });
             }}
+            onBlur={() => saveElement(edit)}
           />
         </Row>
       </Animated.View>
     </View >
   const DragGetElement =
-    < View className='border h-10 w-40 border-gray-500' >
+    < View className='h-10' >
       <Row>
         <Text selectable={false}>get:</Text>
         <TextInput
           value={edit.value}
           onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+          onBlur={() => saveElement(edit)}
         />
       </Row>
     </View >
 
   const DragPostElement =
-    < View className='border h-10 w-40 border-gray-500' >
+    < View className='h-10' >
       <Row>
         <Pressable onPress={handleToggle}>
           <View className=' bg-white'>
@@ -106,6 +111,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
         <TextInput
           value={edit.value}
           onChangeText={(newText) => { setEdit({ ...edit, value: newText }); }}
+          onBlur={() => saveElement(edit)}
         />
       </Row>
       <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
@@ -114,6 +120,7 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
           <TextInput
             value={edit.post}
             onChangeText={(newText) => { setEdit({ ...edit, post: newText }); }}
+            onBlur={() => saveElement(edit)}
           />
         </Row>
       </Animated.View>
@@ -162,13 +169,11 @@ const GetElement: React.FC<{ data: ElementData }> = ({ data }) => {
   return (
     <>
       <Pressable onPress={startGet}>
-        <Text selectable={false} className='w-20 h-5 bg-slate-500'>
+        <Text selectable={false} className='w-20 h-5 dark:bg-slate-500'>
           press me
         </Text>
       </Pressable>
-      <Text>
-        {getloading ? "loading" : getdata.toString()}
-      </Text>
+      <RenderHtml source={getloading ? "loading" : getdata.toString()} />
     </>
   )
 }
@@ -205,9 +210,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
           press me
         </Text>
       </Pressable>
-      <Text>
-        {loading ? "loading" : postdata.toString()}
-      </Text>
+      <RenderHtml source={loading ? "loading" : postdata.toString()} />
     </>
   )
 }

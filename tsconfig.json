@@ -5,7 +5,9 @@
     "paths": {
       "app/*": ["./packages/app/*"]
     },
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "module": "es2020",
+
   },
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
 }
