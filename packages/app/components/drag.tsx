@@ -124,36 +124,39 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
 
   const renderTextInputs = () => {
     return Object.keys(post).map((key) => (
-      <Row>
-        <Text selectable={false} >{key}:</Text>
-        {typeof post[key] === "number" ? <TextInput
-          keyboardType='numeric'
-          key={key}
-          value={typeof post[key] === "number" ? post[key].toString() : post[key]}
-          className='border dark:border-white'
-          onChangeText={(text) => {
-            let ntext = parseInt(text, 10);
-            if (!ntext) ntext = 1;
-            console.log(ntext, typeof ntext)
-            setPost((prevValues: any) => ({
-              ...prevValues,
-              [key]: ntext,
-            }));
-          }}
-        /> : <TextInput
-          key={key}
-          value={post[key]}
-          className='border dark:border-white'
-          onChangeText={(text) => {
-            setPost((prevValues: any) => ({
-              ...prevValues,
-              [key]: text,
-            }));
-          }}
-        />}
+      <Row key={key}> {/* 確保在 map 中的每個元素上都有一個唯一的 key */}
+        <Text selectable={false}>{key}:</Text>
+        {typeof post[key] === "number" ? (
+          <TextInput
+            keyboardType='numeric'
+            value={post[key].toString()}
+            className='border dark:border-white'
+            onChangeText={(text) => {
+              let ntext = parseInt(text, 10);
+              if (!ntext) ntext = 1;
+              console.log(ntext, typeof ntext);
+              setPost((prevValues: any) => ({
+                ...prevValues,
+                [key]: ntext,
+              }));
+            }}
+          />
+        ) : (
+          <TextInput
+            value={post[key]}
+            className='border dark:border-white'
+            onChangeText={(text) => {
+              setPost((prevValues: any) => ({
+                ...prevValues,
+                [key]: text,
+              }));
+            }}
+          />
+        )}
       </Row>
     ));
   };
+
 
   return (
     <>
