@@ -117,11 +117,6 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
   const { postdata, loading, startPost } = fetchPost(data.value);
   const [post, setPost] = useState<object>(JSON.parse(data.post));
 
-  useEffect(() => {
-    Object.keys(post).map((key) => (
-      console.log()))
-  }, [])
-
   const renderTextInputs = () => {
     return Object.keys(post).map((key) => (
       <Row key={key}> {/* 確保在 map 中的每個元素上都有一個唯一的 key */}
