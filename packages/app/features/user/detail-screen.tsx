@@ -76,7 +76,7 @@ export function UserDetailScreen() {
   };
 
   return (
-    <View className='border flex-1 bg-orange-100 dark:bg-slate-800'>
+    <View className='border flex-1 bg-orange-100 dark:bg-neutral-800'>
       <Row>
         {edit ? <CreateButton /> : null}
       </Row>

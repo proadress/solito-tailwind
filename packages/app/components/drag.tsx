@@ -16,15 +16,6 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
   const [isExpanded, setIsExpanded] = useState(false);
   const animatedHeight = new Animated.Value(isExpanded ? 40 : 0);
 
-  const handleToggle = () => {
-    Animated.timing(animatedHeight, {
-      toValue: isExpanded ? 40 : 200,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-    setIsExpanded(!isExpanded);
-  };
-
   useEffect(() => {
     saveElement({ ...edit, x: parseInt(pan.x._value, 10), y: parseInt(pan.y._value, 10) });
   }, [Draging]);
@@ -50,11 +41,6 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
   const DragPostElement =
     < View className='h-10' >
       <Row>
-        <Pressable onPress={handleToggle}>
-          <View className=' bg-white'>
-            <Text selectable={false}> = </Text>
-          </View>
-        </Pressable>
         <Text selectable={false} >post:</Text>
         <TextInput
           value={edit.value}
@@ -62,17 +48,15 @@ export const DraggableElement: React.FC<{ data: ElementData, saveElement: (obj: 
           onBlur={() => saveElement({ ...edit, x: pan.x._value, y: pan.y._value })}
         />
       </Row>
-      <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
-        <Row>
-          <Text selectable={false} className='font-bold'>id:</Text>
-          <TextInput
-            value={edit.post}
-            onChangeText={(newText) => { setEdit({ ...edit, post: newText }); }}
-            onBlur={() => saveElement({ ...edit, x: pan.x._value, y: pan.y._value })
-            }
-          />
-        </Row>
-      </Animated.View>
+      <Row>
+        <Text selectable={false} className='font-bold'>id:</Text>
+        <TextInput
+          value={edit.post}
+          onChangeText={(newText) => { setEdit({ ...edit, post: newText }); }}
+          onBlur={() => saveElement({ ...edit, x: pan.x._value, y: pan.y._value })
+          }
+        />
+      </Row>
     </View >
   return (
     <Animated.View
@@ -145,7 +129,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
         {typeof post[key] === "number" ? <TextInput
           keyboardType='numeric'
           key={key}
-          value={post[key].toString()}
+          value={typeof post[key] === "number" ? post[key].toString() : post[key]}
           className='border dark:border-white'
           onChangeText={(text) => {
             let ntext = parseInt(text, 10);

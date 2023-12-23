@@ -19,5 +19,6 @@ yarn upgrade solito
 yarn upgrade --latest
 yarn upgrade
 yarn set version latest
+cd apps/expo
 eas update
 eas build
