@@ -15,13 +15,11 @@ eas update
 eas login
 eas build:configure
 eas build
+
 yarn upgrade solito
 yarn upgrade --latest
 yarn upgrade
 yarn set version latest
-cd apps/expo
-eas update
-eas build 
 
 eas build --profile development --platform android
 

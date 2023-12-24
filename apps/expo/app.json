@@ -1,30 +1,28 @@
 {
   "expo": {
-    "name": "solito-nativewind",
-    "slug": "solito-nativewind",
-    "version": "1.0.0",
-    "scheme": "solito-nativewind",
-    "userInterfaceStyle": "automatic",
+    "name": "blank-快速建造app",
+    "slug": "test1",
+    "version": "1.0.1",
+    "scheme": "solito-blank",
     "platforms": [
       "ios",
       "android"
     ],
     "ios": {
-      "bundleIdentifier": "com.solito.nativewind"
+      "bundleIdentifier": "com.solito.blank"
     },
     "extra": {
       "eas": {
-        "projectId": "38b13311-39c3-4aee-9b83-7996dbe2c6fb"
+        "projectId": "093a1b2c-403d-419d-ad3c-6581c4ecbf1b"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/38b13311-39c3-4aee-9b83-7996dbe2c6fb"
-    },
     "android": {
-      "package": "com.solito.nativewind"
-    }
+      "package": "com.solito.blankk",
+      "adaptiveIcon": {
+        "foregroundImage": "blockchain.png"
+      },
+      "versionCode": 4
+    },
+    "owner": "yc359032"
   }
 }

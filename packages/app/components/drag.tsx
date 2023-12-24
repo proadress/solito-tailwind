@@ -112,7 +112,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
     return <Row className="items-center">
       <Text selectable={false} className='mr-2 font-mono font-bold'>{postKey}:</Text>
       <TextInput
-        className="border-b border-blue-700 focus:outline-none focus:border-blue-400 focus:border-b-2 dark:border-yellow-500 dark:focus:border-orange-600"
+        className="w-20 focus:w-60 border-b border-blue-700 focus:outline-none focus:border-blue-400 focus:border-b-2 dark:border-yellow-500 dark:focus:border-orange-600"
         value={value}
         onChangeText={(text) => { setValue(text) }}
         onBlur={() => {
@@ -130,7 +130,7 @@ const PostElement: React.FC<{ data: ElementData }> = ({ data }) => {
       <Text selectable={false} className='mr-2 font-mono font-bold'>{postKey}:</Text>
       <TextInput
         keyboardType='numeric'
-        className="border-b border-blue-700 focus:outline-none focus:border-blue-400 focus:border-b-2 dark:border-yellow-500 dark:focus:border-orange-600"
+        className="w-20 focus:w-60 border-b border-blue-700 focus:outline-none focus:border-blue-400 focus:border-b-2 dark:border-yellow-500 dark:focus:border-orange-600"
         value={value ? value.toString() : ""}
         onChangeText={(text) => { setValue(parseInt(text)) }}
         onBlur={() =>
