@@ -15,29 +15,28 @@ export const ProjectCol: React.FC = () => {
     return (
         <>
             <View className="h-[10px]"></View>
-            <Row className=" space-x-2">
+            <Row className="space-x-1">
                 <TextInput
                     onChangeText={(newText) => setName(newText)}
                     value={name}
-                    // className="border dark:border-white"
-                    className=' bg-neutral-300 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'
+                    className=' focus:bg-neutral-300 dark:bg-neutral-500 dark:text-white border-b px-2 rounded-full focus:scale-105'
                     placeholder="(請輸入專案名稱)"
                 ></TextInput>
                 <Pressable onPress={() => {
                     if (name !== "")
                         addProject(name);
                 }}>
-                    <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+                    <Text className='bg-pink-500 text-white px-2 py-1 rounded-full transition-transform transform hover:scale-105'>
                         新專案
                     </Text>
                 </Pressable>
                 <Pressable onPress={getAllUidData}>
-                    <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+                    <Text className='bg-green-600 text-white px-2 py-1 rounded-full transition-transform transform hover:scale-105'>
                         刷新
                     </Text>
                 </Pressable>
                 <Pressable onPress={async () => clear()}>
-                    <Text className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
+                    <Text className='bg-red-600 text-white py-1 px-2 rounded-full transition-transform transform hover:scale-105'>
                         清除
                     </Text>
                 </Pressable>
@@ -60,50 +59,44 @@ const Project: React.FC<{ project: ProjectData, saveProject: (id: string, value:
     }, [project]);
 
     return (
-        <View className="mt-1 w-[250px] h-[60px] space-x-8 justify-center">
-            <Row className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
-                <TextLink href={`/user/u${project.id}`} className=" my-2">
-                    <H1 className='bg-pink-500 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-700 hover:to-purple-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md transition-transform transform hover:scale-105'>
-                        {project.name}
-                    </H1>
+        <Row className='mt-2 w-60 py-2 px-4 justify-center bg-rose-300 rounded-3xl transition-transform transform hover:scale-105 space-x-2 border-4 border-rose-400'>
+            <Row className="flex flex-auto justify-between">
+                <TextLink href={`/user/u${project.id}`}>
+                    <Text className="text-black text-xl font-extrabold">{project.name}</Text>
                 </TextLink>
-                <Row className=" items-center">
-                    <View className="w-[20px]"></View>
-                    <TextInput
-                        value={clip}
-                        className='bg-blue-500 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-700 hover:to-green-700 text-white font-handwritten py-2 px-2 rounded-full shadow-md w-[60px]'
-                        onChangeText={(newText) => setclip(newText)}
-                        onBlur={() => {
-                            saveProject(project.id, clip);
-                            setclip(project.value);
-                        }}
-                    />
-                    <View className=" w-[35px] h-[35px] items-center justify-center">
-                        <TextLink href={`/user/e${project.id}`}>
-                            <SolitoImage
-                                src={require('./../assets/edit.png')}
-                                height={25}
-                                width={25}
-                                alt=""
-                            />
-                        </TextLink>
-                    </View>
-                    <View className=" w-[35px] h-[35px] items-center justify-center">
-                        <Pressable onPress={async () => {
-                            console.log(project.id);
-                            del(project.id);
-                        }}>
-                            <SolitoImage
-                                src={require('./../assets/trash.png')}
-                                height={30}
-                                width={30}
-                                alt=""
-                            />
-                        </Pressable>
-                    </View>
-                </Row>
+                <TextInput
+                    value={clip}
+                    className='bg-blue-400 text-white px-2 rounded-full w-10'
+                    onChangeText={(newText) => setclip(newText)}
+                    onBlur={() => {
+                        saveProject(project.id, clip);
+                        setclip(project.value);
+                    }}
+                />
             </Row>
-        </View >
+            <Row className=" justify-end items-center space-x-2">
+                <TextLink href={`/user/e${project.id}`}>
+                    <SolitoImage
+                        src={require('./../assets/edit.png')}
+                        height={25}
+                        width={25}
+                        alt=""
+                    />
+                </TextLink>
+                <Pressable onPress={async () => {
+                    console.log(project.id);
+                    del(project.id);
+                }}>
+                    <SolitoImage
+                        src={require('./../assets/trash.png')}
+                        height={30}
+                        width={30}
+                        alt=""
+                    />
+                </Pressable>
+            </Row>
+        </Row>
+
     );
 };
 
